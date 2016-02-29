@@ -2,7 +2,7 @@ import serial
 from tkinter import *
 import time
 import motorbuttons
-import jv
+import createWells
 time.sleep(2)
 #arduinoData = serial.Serial('com3',9600)
 
@@ -17,7 +17,7 @@ class PrinterGui(Frame):
         self.GoButton=Button(self,text="Move!",command=lambda:motor_move(self)).grid(column = 1, row = 1)
         Motor_control_window.title("Automated Cell Culturer")
         
-        jv.create_wells(self)
+        createWells.create_wells(self)
         
         
     def buttonPressing(self, event):
