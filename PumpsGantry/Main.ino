@@ -37,48 +37,101 @@ void setup()
     
     pinMode(EthanolPump,              OUTPUT);
     pinMode(WastePump,                OUTPUT);
-//    pinMode(TrypsinPump,              OUTPUT);                  // Declare peristaltic pumps
-//    pinMode(MediaPump,                OUTPUT);
-//    pinMode(PbsPump,                  OUTPUT);
+    pinMode(TrypsinPump,              OUTPUT);                  // Declare peristaltic pumps
+    pinMode(MediaPump,                OUTPUT);
+    pinMode(PBSPump,                  OUTPUT);
     
     Wire.begin(9);                                              // Initialize the I2C
     Wire.onReceive(receiveEvent); // register event
 
     Serial.begin(9600);                                         // Initialize serial communication
 }
-
 void receiveEvent(int bytes) 
 {
-  wellDown = Wire.read();                                     // read one character from the I2C
+  incomingByte = Wire.read();                                     // read one character from the I2C
 }
 void draw() 
 {
   u8g.setFont(u8g_font_unifont);
   u8g.setPrintPos(15,15);
-  u8g.print(wellDown);
+//  u8g.print(xPinStatus);
+  u8g.print(mot);
   u8g.setPrintPos(15,35);                                       // Print out stuff to the LCD
-  u8g.print(yPos);
+//  u8g.print(returnState);
+    u8g.print(dir);
   u8g.setPrintPos(15,55);
-  u8g.print(zPos);
+  u8g.print(dis);
+//  u8g.print(mot);
 }
 
 void loop()
 {
+//    u8g.firstPage();  
+//    do 
+//    {
+//      draw();                                                 //Initialize LCD
+//    }
+//    while( u8g.nextPage() );
+//    delay(50);
+    
   xPinStatus = digitalRead(X_MIN_PIN);
   yPinStatus = digitalRead(Y_MIN_PIN);                          // Read data from end stops
   zPinStatus = digitalRead(Z_MIN_PIN);
-Serial.println(wellDown);
-    if(wellDown == 2)                                                    // Find the wells in a plate
-    {
-      chrisClass.goToWells(6); 
+
+  switch(incomingByte)
+  {
+    case 'A':
+    chrisClass.homeAxis();
+    break;
+    case 'B':
+    chrisClass.goToWells(6);
+    break;
+    case 'C':
+    chrisClass.changeMedia(6);
+    break;
+    case 'D':
+    chrisClass.changeMedia(24);
+    break;
+    case 'E':
+    chrisClass.changeMedia(96);
+    break;
+    case 'F':
+    chrisClass.motorz("X","LOW","1");
+    break;
+    case 'G': 
+    chrisClass.motorz("X","HIGH","1");
+    break;
+//    case 'H':
+//    chrisClass.;
+//    break;
+//    case 'I':
+//    chrisClass.;
+//    break;
+//    case 'J':
+//    chrisClass.;
+//    break;
+//    case 'K':
+//    chrisClass.;
+//    break;
+//    case 'L':
+//    chrisClass.;
+//    break;
+//    case 'M':
+//    chrisClass.;
+//    break;
+//    case 'N':
+//    chrisClass.;
+//    break;
+//    case 'O':
+//    chrisClass.;
+//    break;
+//    case 'P':
+//    chrisClass.;
+//    break;
+//    case 'Q':
+//    chrisClass.;
+//    break;    
     }
-    u8g.firstPage();  
-    do 
-    {
-      draw();                                                 //Initialize LCD
-    } 
-    while( u8g.nextPage() );
-    delay(50);
 
 
   while (Serial.available()>0) 
@@ -88,22 +141,30 @@ Serial.println(wellDown);
     dir = Serial.readStringUntil(':');                            // Read data from serial port
     Serial.read();
     dis  = Serial.readStringUntil('\0');
+
+        u8g.firstPage();  
+    do 
+    {
+      draw();                                                 //Initialize LCD
+    }
+    while( u8g.nextPage() );
+    delay(50);
     
+    float a[2] = {dir.toFloat(),dis.toFloat()};
+    
+    if(mot=="rel")
+    {
+    chrisClass.relMover(6,a);
+    }
+
     
     if(mot=="Y" || mot=="X" || mot=="EX1" || mot=="EX2" || mot == "Z")        // Move motors
     {
       chrisClass.motorz(mot,dir,dis);
     }
-    
-    if(mot == "Home Axes")                                                    // Home the axes
+    if(mot=="home")        // Move motors
     {
       chrisClass.homeAxis();
     }
-    
-    if(mot=="Well plates")                                                    // Find the wells in a plate
-    {
-      chrisClass.goToWells(6); 
     }
-
-  } 
 }
