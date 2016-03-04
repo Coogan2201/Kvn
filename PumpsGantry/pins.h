@@ -33,8 +33,6 @@ String mot;
 String dis;
 String dir;
 String del;
-float wellZHeight;
-float wellVolume;
 int xPinStatus;
 int yPinStatus;
 int zPinStatus;
@@ -43,6 +41,4 @@ float yPos;
 float xPos;
 float zPos;
 
-int wellDown;
-
-
+int incomingByte;
