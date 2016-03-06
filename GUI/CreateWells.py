@@ -1,44 +1,48 @@
 from tkinter import *
 
 
-def create_wells(self):
-
-    des = Frame(self,width=350,height=350, bg='blue')
-    des.grid()
-    canvas = Canvas(des, width = 300, height = 300, border=2)
-    canvas.grid()
+def create_wells(self, size):
+    well=[]
+    self.des = Frame(self,width=350,height=350, bg='blue')
+    self.des.grid()
+    self.canvas = Canvas(self.des, width = 300, height = 300, border=2)
+    self.canvas.grid()
+    count = 0
+    def _create_circle(x, y, r,**kwargs):
+        return self.canvas.create_oval(x-r, y-r, x+r, y+r, **kwargs)
+    cols=0
+    rows=0
+    wells=0
     
+    if(size == '6'):
+        cols=3
+        rows=2
+        wells=6
+        self.canvas.create_rectangle(20, 150, 225, 20)
+    if(size == '24'):
+        cols=6
+        rows=4
+        wells=24
+        self.canvas.create_rectangle(20, 150, 225, 20)
+    if(size == '96'):
+        cols=12
+        rows=8
+        wells=96        
+        self.canvas.create_rectangle(20, 150, 225, 20)    
+        
     def onObjectClick(event):
         wellFinder=(event.widget.find_closest(event.x, event.y))
-        if wellFinder==(1,):
-            canvas.itemconfig(well1,fill="green")
-        if wellFinder==(2,):
-            canvas.itemconfig(well3,fill="green")
-        if wellFinder==(3,):
-            canvas.itemconfig(well5,fill="green")
-        if wellFinder==(4,):
-            canvas.itemconfig(well2,fill="green")
-        if wellFinder==(5,):
-            canvas.itemconfig(well4,fill="green")
-        if wellFinder==(6,):
-            canvas.itemconfig(well6,fill="green")
-    
-    def _create_circle(x, y, r,**kwargs):
-        return canvas.create_oval(x-r, y-r, x+r, y+r, **kwargs)
-    
-    
-    well1 = _create_circle(50,50,25,fill="white", activefill="red")
-    well3 = _create_circle(120,50,25,fill="white", activefill="green")
-    well5 = _create_circle(190,50,25,fill="white", activefill="blue")
-    
-    well2 = _create_circle(50,120,25,fill="white", activefill="white")
-    well4 = _create_circle(120,120,25,fill="white", activefill="black")
-    well6 = _create_circle(190,120,25,fill="white", activefill="cyan")
-    canvas.create_rectangle(20, 150, 225, 20)
-    
-    canvas.tag_bind(well1,'<Double-1>',onObjectClick)
-    canvas.tag_bind(well2,'<Double-1>',onObjectClick)
-    canvas.tag_bind(well3,'<Double-1>',onObjectClick)
-    canvas.tag_bind(well4,'<Double-1>',onObjectClick)
-    canvas.tag_bind(well5,'<Double-1>',onObjectClick)
-    canvas.tag_bind(well6,'<Double-1>',onObjectClick)
+        buttonFill = event.widget.itemcget(wellFinder,"fill")
+        for x in range(0,wells+2):
+            if wellFinder==(x,):
+                if(buttonFill == "white"):
+                    self.canvas.itemconfig(well[x-2],fill="green")
+                if(buttonFill =="green"):
+                    self.canvas.itemconfig(well[x-2],fill="white")
+        print(wellFinder)
+
+    for y in range(0,rows):
+        for x in range(0,cols):
+            well.append(_create_circle(100+x*60,100+y*60,25/cols,fill="white", activefill="cyan"))
+            self.canvas.tag_bind(well[count],'<Double-1>',onObjectClick)
+            count=count+1 
