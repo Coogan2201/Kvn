@@ -4,9 +4,9 @@
 #include "pins.h"
 #include "U8glib.h"
 #include "motorClass.h"
-motorClass chrisClass;
+motorClass gantrySystem;                                      // create instance of motorClass
 
-U8GLIB_ST7920_128X64_1X u8g(23,17,16);                        // Declare LCD pins
+//U8GLIB_ST7920_128X64_1X u8g(23,17,16);                        // Declare LCD pins
 
 void setup() 
 {
@@ -41,28 +41,25 @@ void setup()
     pinMode(MediaPump,                OUTPUT);
     pinMode(PBSPump,                  OUTPUT);
     
-    Wire.begin(9);                                              // Initialize the I2C
-    Wire.onReceive(receiveEvent); // register event
+    Wire.begin(9);                                              // Initialize the I2C (communicate between the two arduinos)
+    Wire.onReceive(receiveEvent);                               // register event
 
     Serial.begin(9600);                                         // Initialize serial communication
 }
 void receiveEvent(int bytes) 
 {
-  incomingByte = Wire.read();                                     // read one character from the I2C
+  incomingByte = Wire.read();                                   // read one character from the I2C
 }
-void draw() 
-{
-  u8g.setFont(u8g_font_unifont);
-  u8g.setPrintPos(15,15);
-//  u8g.print(xPinStatus);
-  u8g.print(mot);
-  u8g.setPrintPos(15,35);                                       // Print out stuff to the LCD
-//  u8g.print(returnState);
-    u8g.print(dir);
-  u8g.setPrintPos(15,55);
-  u8g.print(dis);
-//  u8g.print(mot);
-}
+//void draw() 
+//{
+//  u8g.setFont(u8g_font_unifont);
+//  u8g.setPrintPos(15,15);
+//  u8g.print(zPos);
+//  u8g.setPrintPos(15,35);                                       // Print out stuff to the LCD
+//    u8g.print(xPos);
+//  u8g.setPrintPos(15,55);
+//  u8g.print(yPos);
+//}
 
 void loop()
 {
@@ -81,56 +78,53 @@ void loop()
   switch(incomingByte)
   {
     case 'A':
-    chrisClass.homeAxis();
+    gantrySystem.homeAxis();
     break;
     case 'B':
-    chrisClass.goToWells(6);
+    gantrySystem.changeMedia(6);
     break;
     case 'C':
-    chrisClass.changeMedia(6);
+    gantrySystem.changeMedia(24);
     break;
     case 'D':
-    chrisClass.changeMedia(24);
-    break;
-    case 'E':
-    chrisClass.changeMedia(96);
+    gantrySystem.changeMedia(96);
     break;
     case 'F':
-    chrisClass.motorz("X","LOW","1");
+    gantrySystem.motorz2('X','0',1);
     break;
     case 'G': 
-    chrisClass.motorz("X","HIGH","1");
+    gantrySystem.motorz2('X','0',0);
     break;
-//    case 'H':
-//    chrisClass.;
-//    break;
-//    case 'I':
-//    chrisClass.;
-//    break;
-//    case 'J':
-//    chrisClass.;
-//    break;
-//    case 'K':
-//    chrisClass.;
-//    break;
-//    case 'L':
-//    chrisClass.;
-//    break;
-//    case 'M':
-//    chrisClass.;
-//    break;
-//    case 'N':
-//    chrisClass.;
-//    break;
-//    case 'O':
-//    chrisClass.;
-//    break;
-//    case 'P':
-//    chrisClass.;
-//    break;
-//    case 'Q':
-//    chrisClass.;
-//    break;    
+    case 'H':
+    gantrySystem.motorz2('X','1',1);
+    break;
+    case 'I':
+    gantrySystem.motorz2('X','1',0);
+    break;
+    case 'J':
+    gantrySystem.motorz2('Y','1',1);
+    break;
+    case 'K':
+    gantrySystem.motorz2('Y','1',0);
+    break;
+    case 'L':
+    gantrySystem.motorz2('Y','0',1);
+    break;
+    case 'M':
+    gantrySystem.motorz2('Y','0',0);
+    break;
+    case 'N':
+    gantrySystem.motorz2('Z','1',1);
+    break;
+    case 'O':
+    gantrySystem.motorz2('Z','1',0);
+    break;
+    case 'P':
+    gantrySystem.motorz2('Z','0',1);
+    break;
+    case 'Q':
+    gantrySystem.motorz2('Z','0',0);
+    break;    
     }
 
 
@@ -138,33 +132,31 @@ void loop()
   {
     mot  = Serial.readStringUntil(':');
     Serial.read();
-    dir = Serial.readStringUntil(':');                            // Read data from serial port
-    Serial.read();
-    dis  = Serial.readStringUntil('\0');
+//    dir = Serial.readStringUntil(':');                            // Read data from serial port
+//    Serial.read();
+//    dis  = Serial.readStringUntil('\0');
+//    float a[2] = {dir.toFloat(),dis.toFloat()};
+    
+//    if(mot=="rel")
+//    {
+//    gantrySystem.relMover(6,a);
+//    }
 
-        u8g.firstPage();  
-    do 
-    {
-      draw();                                                 //Initialize LCD
-    }
-    while( u8g.nextPage() );
-    delay(50);
-    
-    float a[2] = {dir.toFloat(),dis.toFloat()};
-    
-    if(mot=="rel")
-    {
-    chrisClass.relMover(6,a);
-    }
-
-    
-    if(mot=="Y" || mot=="X" || mot=="EX1" || mot=="EX2" || mot == "Z")        // Move motors
-    {
-      chrisClass.motorz(mot,dir,dis);
-    }
     if(mot=="home")        // Move motors
     {
-      chrisClass.homeAxis();
+      gantrySystem.homeAxis();
     }
+    if(mot=="test")       // Test running two motors simultaneously
+    {
+      for(int i=1;i<4000;i++)
+      {
+      gantrySystem.motorz2('X', '0',1);
+      gantrySystem.motorz2('Y', '0',1);
+      }
     }
+    if(mot=="F")
+    {
+        gantrySystem.changeMedia(96);
+  }
+}
 }
