@@ -1,75 +1,51 @@
 from tkinter import *
-from SrDes import wellCreator
 
-def select_size(self):
-    if(self.varWells.get() == '6'):
-        self.des.grid_forget()
-        self.des.destroy()
-        wellCreator.create_wells(self,'6')
-    if(self.varWells.get() == '24'):
-        self.des.grid_forget()
-        self.des.destroy()
-        wellCreator.create_wells(self,'24')
-    if(self.varWells.get() == '96'):
-        self.des.grid_forget()
-        self.des.destroy()
-        wellCreator.create_wells(self,'96')
+
+def create_wells(self, size):
+    well=[]
+    self.des = Frame(self,width=350,height=350, bg='blue')
+    self.des.grid()
+    self.canvas = Canvas(self.des, width = 300, height = 300, border=2)
+    self.canvas.grid()
+    count = 0
+    def _create_circle(x, y, r,**kwargs):
+        return self.canvas.create_oval(x-r, y-r, x+r, y+r, **kwargs)
+    
+    cols=0
+    rows=0
+    wells=0
+    
+    if(size == '6'):
+        cols=3
+        rows=2
+        wells=6
+        self.canvas.create_rectangle(20, 150, 225, 20)
+    if(size == '24'):
+        cols=6
+        rows=4
+        wells=24
+        self.canvas.create_rectangle(20, 150, 225, 20)
+    if(size == '96'):
+        cols=12
+        rows=8
+        wells=96        
+        self.canvas.create_rectangle(20, 150, 225, 20)    
         
-def create_buttons(self):
+    def onObjectClick(event):
+        self.wellFinder=(event.widget.find_closest(event.x, event.y))
+        self.buttonFill = event.widget.itemcget(self.wellFinder,"fill")
+        for x in range(0,wells):
+            if self.wellFinder==(x,):
+                if(self.buttonFill == "white"):
+                    self.canvas.itemconfig(well[x-2],fill="green")
+                if(self.buttonFill =="green"):
+                    self.canvas.itemconfig(well[x-2],fill="white")
+        self.buttonFill2 = event.widget.itemcget(self.wellFinder,"fill")
 
-    self.SelectButton=Button(self,text="Select!",command=lambda:select_size(self)).grid(column = 1, row = 4)
-    #self.GoButton=Button(self,text="Move!",command=lambda:select_size(self)).grid(column = 1, row = 10)
-
-
-    self.HomeButton=Button(self,text="Go to home")
-    self.HomeButton.grid(column=5,row=3)   
-    self.HomeButton.bind('<Button-1>', self.buttonPressing)
-
-    self.MediaButton=Button(self,text="Change Media")
-    self.MediaButton.grid(column=5,row=5)   
-    self.MediaButton.bind('<Button-1>', self.buttonPressing)
-
-    self.LeftButton=Button(self,text="Move Left")
-    self.LeftButton.grid(column=7,row=7)   
-    self.LeftButton.bind('<Button-1>', self.buttonPressing)        
-    self.LeftButton.bind('<ButtonRelease-1>', self.buttonPressing)
-
-    self.RightButton=Button(self,text="Move Right")
-    self.RightButton.grid(column=9,row=7)   
-    self.RightButton.bind('<Button-1>', self.buttonPressing)        
-    self.RightButton.bind('<ButtonRelease-1>', self.buttonPressing) 
-    
-    self.BackButton=Button(self,text="Move Back")
-    self.BackButton.grid(column=8,row=8)   
-    self.BackButton.bind('<Button-1>', self.buttonPressing)        
-    self.BackButton.bind('<ButtonRelease-1>', self.buttonPressing) 
-    
-    self.ForwardButton=Button(self,text="Move Forward")
-    self.ForwardButton.grid(column=8,row=6)   
-    self.ForwardButton.bind('<Button-1>', self.buttonPressing)        
-    self.ForwardButton.bind('<ButtonRelease-1>', self.buttonPressing) 
-    
-    self.UpButton=Button(self,text="Move Up")
-    self.UpButton.grid(column=9,row=6)   
-    self.UpButton.bind('<Button-1>', self.buttonPressing)        
-    self.UpButton.bind('<ButtonRelease-1>', self.buttonPressing) 
-    
-    self.DownButton=Button(self,text="Move Down")
-    self.DownButton.grid(column=9,row=8)   
-    self.DownButton.bind('<Button-1>', self.buttonPressing)        
-    self.DownButton.bind('<ButtonRelease-1>', self.buttonPressing)         
-    
-        #Well plate selector
-    self.varWells = StringVar(self)
-    self.wellChoice = {'6': '6', '24':'24','96':'96'}
-    self.wellOption = OptionMenu(self, self.varWells, *self.wellChoice)
-    self.varWells.set('What size plate are you using?')
-    self.wellOption.grid(column = 1, row =5)
         
-    #Protocol
-#    self.varProtocol = StringVar(self)
-#    self.protocolChoice = {'Aspirate': 'Aspirate','Media': 'Media', 'PBS':'PBS','Trypsin':'Trypsin','EthanolWash':'EthanolWash'}
-#    self.protocolOption = OptionMenu(self, self.varProtocol, *self.protocolChoice)
-#    self.varProtocol.set('What liquid do you want?')
-#    self.protocolOption.grid(column = 3, row =6)
-    
+
+    for y in range(0,rows):
+        for x in range(0,cols):
+            well.append(_create_circle(100+x*60,100+y*60,25/cols,fill="white", activefill="cyan"))
+            self.canvas.tag_bind(well[count],'<Double-1>',onObjectClick)
+            count=count+1 
