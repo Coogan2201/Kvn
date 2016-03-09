@@ -21,8 +21,8 @@
 #define EX2_DIR_PIN         34
 #define EX2_ENABLE_PIN      30
 
-#define EthanolPump 6
-#define WastePump 11
+#define EthanolPump 11
+#define WastePump 6
 #define TrypsinPump 5
 #define MediaPump 4
 #define PBSPump 2
@@ -41,4 +41,4 @@ float yPos;
 float xPos;
 float zPos;
 
-int incomingByte;
+byte incomingByte;
