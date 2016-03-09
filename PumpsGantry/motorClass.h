@@ -4,7 +4,7 @@
 #include "U8glib.h"
 
 Pumps PumpSystem;
-U8GLIB_ST7920_128X64_1X u8g(23,17,16);                        // Declare LCD pins
+
 
 int stepPin;
 int dirPin;
@@ -18,16 +18,6 @@ int numRows;
 class motorClass
 {
   public:
-  void draw() 
-{
-  u8g.setFont(u8g_font_unifont);
-  u8g.setPrintPos(15,15);
-  u8g.print(zPos);
-  u8g.setPrintPos(15,35);                                       // Print out stuff to the LCD
-    u8g.print(xPos);
-  u8g.setPrintPos(15,55);
-  u8g.print(yPos);
-}
     void motorz2(byte motor, byte direction_, float distance)             //move the motors
     {
 //      delay(50);
@@ -215,11 +205,7 @@ class motorClass
       for(int i = 0; i<numCols; i++)
       {
         Well[i+(numCols*j)][0] = startX+(i*wellDist);
-        Well[i+(numCols*j)][1] = startY - j*wellDist;
-        
-//        Serial.println(Well[i+(numCols*j)][0]);
-//        Serial.println(Well[i+(numCols*j)][1]);
-//        Serial.println("n");    
+        Well[i+(numCols*j)][1] = startY - j*wellDist; 
       }
     }
         
@@ -229,7 +215,7 @@ class motorClass
       relMover(Well[n][0],Well[n][1]);
       motorz2('Z','0',800);
       delay(100);
-      PumpSystem.Pump(wellSize, WastePump, 120, 5000);         //change Pump function to incorporate duration and speed control
+      PumpSystem.Pump(wellSize, EthanolPump, 120, 5000);         //Switch to waste after testing
       motorz2('Z','1',800);
       }
 
@@ -253,6 +239,7 @@ class motorClass
       PumpSystem.Pump(wellSize,WastePump,120,500);            //Try this just to prevent leaking everywhere
 
       }
+     //add delay for PBS WASHING
       
     //Aspirate PBS
       for(int n=0;n<6;n++)
