@@ -5,8 +5,8 @@
 #include "U8glib.h"
 #include "motorClass.h"
 motorClass gantrySystem;                                      // create instance of motorClass
-
-//U8GLIB_ST7920_128X64_1X u8g(23,17,16);                        // Declare LCD pins
+Pumps pumpSystem;
+U8GLIB_ST7920_128X64_1X u8g(23,17,16);                        // Declare LCD pins
 
 void setup() 
 {
@@ -30,50 +30,62 @@ void setup()
     digitalWrite(Z1_ENABLE_PIN,       LOW);
     digitalWrite(EX1_ENABLE_PIN,      LOW);
     digitalWrite(EX2_ENABLE_PIN,      LOW);
-    
     pinMode(X_MIN_PIN,                INPUT);
     pinMode(Y_MIN_PIN,                INPUT);                   // Declare end stops
     pinMode(Z_MIN_PIN,                INPUT);
-    
     pinMode(EthanolPump,              OUTPUT);
     pinMode(WastePump,                OUTPUT);
     pinMode(TrypsinPump,              OUTPUT);                  // Declare peristaltic pumps
     pinMode(MediaPump,                OUTPUT);
     pinMode(PBSPump,                  OUTPUT);
-    
     Wire.begin(9);                                              // Initialize the I2C (communicate between the two arduinos)
     Wire.onReceive(receiveEvent);                               // register event
-
     Serial.begin(9600);                                         // Initialize serial communication
 }
 void receiveEvent(int bytes) 
 {
-  incomingByte = Wire.read();                                   // read one character from the I2C
+//  incomingByte = Wire.readStringUntil(':');                                   // read one character from the I2C
+//  incomingByte = Wire.read();                                   // read one character from the I2C}
 }
-//void draw() 
-//{
-//  u8g.setFont(u8g_font_unifont);
-//  u8g.setPrintPos(15,15);
-//  u8g.print(zPos);
-//  u8g.setPrintPos(15,35);                                       // Print out stuff to the LCD
-//    u8g.print(xPos);
-//  u8g.setPrintPos(15,55);
-//  u8g.print(yPos);
-//}
-
+void draw() 
+{
+  u8g.setFont(u8g_font_profont11);
+  u8g.setPrintPos(15,35);                                       // Print out stuff to the LCD
+  u8g.print("Changing Media in a 6 Well Plate");
+}
 void loop()
 {
-//    u8g.firstPage();  
+xPinStatus = digitalRead(X_MIN_PIN);
+yPinStatus = digitalRead(Y_MIN_PIN);                          // Read data from end stops
+zPinStatus = digitalRead(Z_MIN_PIN);
+
+
+while (Serial.available()>0) 
+{
+//  incomingByte  = Serial.readStringUntil(':');
+  incomingByte  = Serial.read();
+}
+//    if(incomingByte=="home")        // Move motors
+//    {
+//      u8g.firstPage();  
 //    do 
 //    {
 //      draw();                                                 //Initialize LCD
 //    }
 //    while( u8g.nextPage() );
 //    delay(50);
-    
-  xPinStatus = digitalRead(X_MIN_PIN);
-  yPinStatus = digitalRead(Y_MIN_PIN);                          // Read data from end stops
-  zPinStatus = digitalRead(Z_MIN_PIN);
+//      gantrySystem.homeAxis();
+//    }
+//    if(incomingByte=="HomeAxes")
+//    {
+//      gantrySystem.motorz2('X','0',1000);
+//    }
+//if(incomingByte=="HomeAxes")
+//{
+//  gantrySystem.motorz2('X','0',1000);
+//  
+//}
+
 
   switch(incomingByte)
   {
@@ -125,38 +137,17 @@ void loop()
     case 'Q':
     gantrySystem.motorz2('Z','0',0);
     break;    
+    case 'R':
+    pumpSystem.Pump(6,EthanolPump, 180, 5000);
+    break;
+    case 'S':
+    pumpSystem.Pump(6,WastePump, 180, 5000);
+    break;
+    case 'T':
+    pumpSystem.Pump(6,EthanolPump, 0, 5000);
+    break;
+    case 'U':
+    pumpSystem.Pump(6,WastePump, 0, 5000);
+    break;
     }
-
-
-  while (Serial.available()>0) 
-  {
-    mot  = Serial.readStringUntil(':');
-    Serial.read();
-//    dir = Serial.readStringUntil(':');                            // Read data from serial port
-//    Serial.read();
-//    dis  = Serial.readStringUntil('\0');
-//    float a[2] = {dir.toFloat(),dis.toFloat()};
-    
-//    if(mot=="rel")
-//    {
-//    gantrySystem.relMover(6,a);
-//    }
-
-    if(mot=="home")        // Move motors
-    {
-      gantrySystem.homeAxis();
-    }
-    if(mot=="test")       // Test running two motors simultaneously
-    {
-      for(int i=1;i<4000;i++)
-      {
-      gantrySystem.motorz2('X', '0',1);
-      gantrySystem.motorz2('Y', '0',1);
-      }
-    }
-    if(mot=="F")
-    {
-        gantrySystem.changeMedia(96);
-  }
-}
 }
