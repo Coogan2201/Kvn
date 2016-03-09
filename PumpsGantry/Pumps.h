@@ -12,9 +12,9 @@ class Pumps
     if(plate == 6)
     {
       analogWrite(pumpz,speedd);
-      delay(duration);
-      analogWrite(pumpz,0);
-      delay(2000);
+//      delay(1);
+//      analogWrite(pumpz,0);
+//      delay(2000);
     }
     if(plate == 24)
     {
