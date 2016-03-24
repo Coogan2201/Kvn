@@ -20,7 +20,6 @@ class motorClass
   public:
     void motorz2(byte motor, byte direction_, float distance)             //move the motors
     {
-//      delay(50);
       if (motor == 'X')
       {
         stepPin = X_STEP_PIN;
@@ -111,13 +110,35 @@ class motorClass
           }
         }
       }
-//      u8g.firstPage();  
-//    do 
-//    {
-//      draw();                                                 //Initialize LCD
-//    }
-//    while( u8g.nextPage() );
-//    delay(50);      
+      if (motor == 'E')
+      {
+        stepPin = EX1_STEP_PIN;
+        dirPin = EX1_DIR_PIN;
+        if (direction_ == '1')
+        {
+          digitalWrite(dirPin,HIGH);
+        }
+        if (direction_=='0')
+        {
+          digitalWrite(dirPin,LOW);
+        }  
+//        delay(50);
+        for(int i =0;i<distance;i++)            //200 steps/revolution (NEMA 17), 1/16th step per pulse. 3200 pulses/revolution   ? How many revolutions per cm??
+        {
+          if(direction_=='0')
+          {
+            EPos--;
+          }
+          if(direction_=='1')
+          {
+            EPos++;
+          }
+          digitalWrite(stepPin, HIGH);
+          delayMicroseconds(700);
+          digitalWrite(stepPin, LOW);
+          delayMicroseconds(700);
+        }
+      }
     }
 
     int homeAxis()                                    //bring the motors to the end stops
@@ -164,13 +185,12 @@ class motorClass
         delayMicroseconds(85);
       }
       zPos = 0;
-      while(zPos<80000)
+      while(zPos<85000)
       {
         motorz2('Z','1',1);
       }
       xPos = 0;
       yPos = 0;
-  //    zPos=30000;         //fix later
     }
     
     int changeMedia(int wellSize)                             //remove cells, sterilize, wash, add media
@@ -213,10 +233,10 @@ class motorClass
       for(int n=0;n<wellSize;n++)
       {
       relMover(Well[n][0],Well[n][1]);
-      motorz2('Z','0',800);
+      motorz2('Z','0',8400);
       delay(100);
       PumpSystem.Pump(wellSize, EthanolPump, 120, 5000);         //Switch to waste after testing
-      motorz2('Z','1',800);
+      motorz2('Z','1',8400);
       }
 
       
@@ -227,6 +247,7 @@ class motorClass
       PumpSystem.Pump(wellSize, EthanolPump, 120, 5000);    //Steralize the tubes
       PumpSystem.Pump(wellSize,WastePump,120,5000);         //suck up all the ethanol
       motorz2('Z','1',800);
+
  
     //PBS Wash
       for(int n=0;n<6;n++)
@@ -282,5 +303,6 @@ class motorClass
       motorz2('Y', '0', abs(movePos[1]));
       }
       }
+
 };
 #endif

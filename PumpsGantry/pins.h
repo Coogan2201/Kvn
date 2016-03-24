@@ -40,5 +40,6 @@ int zPinStatus;
 float yPos;
 float xPos;
 float zPos;
+float EPos;
 
 byte incomingByte;
