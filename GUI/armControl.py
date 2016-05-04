@@ -3,7 +3,7 @@ from tkinter import *
 
 def buttons(self):
 
-    canvasL = Canvas(self, bg='blue',width = 510, height=450,bd=10,highlightbackground='white')
+    canvasL = Canvas(self, bg='firebrick',width = 510, height=450,bd=10,highlightbackground='white')
     canvasL.grid(column=0,row=1)
     canvasL.place(y=530)
 

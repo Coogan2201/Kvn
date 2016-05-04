@@ -3,7 +3,7 @@ from tkinter import *
 
 def liquidFrame(self):
 
-    canvasL = Canvas(self, bg='blue',width = 400, height=470)
+    canvasL = Canvas(self, bg='firebrick',width = 400, height=470)
     canvasL.grid(row=1,column=1)
     canvasL.place(x=550,y=530)
     w = Label(self, text="Needle functions")

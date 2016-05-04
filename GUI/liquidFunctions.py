@@ -3,7 +3,7 @@ from tkinter import *
 
 def liquid2Frame(self):
 
-    canvasL = Canvas(self, bg='blue',width = 400, height=500)
+    canvasL = Canvas(self, bg='firebrick',width = 400, height=500)
     canvasL.grid(column=1,row=0)
     canvasL.place(x=550,y=10)
     w = Label(self, text="Liquid functions")
