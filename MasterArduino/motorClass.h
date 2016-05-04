@@ -29,18 +29,18 @@ class motorClass
         {
           if(direction_=='0')
           {
-  //          yPos++;
+            yPos++;
           }
           if(direction_=='1')
           {
-//            yPos--;
+            yPos--;
           }
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(7500);
+          delayMicroseconds(15000);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(7500);
-          Serial.println(yPos);
-        }
+          delayMicroseconds(15000);
+       }
+
       }
       if (motor == 'J')
       {
@@ -58,17 +58,16 @@ class motorClass
         {
           if(direction_=='0')
           {
-    //        jPos++;
+            jPos++;
           }
           if(direction_=='1')
           {
-  //          jPos--;
+            jPos--;
           }
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(2000);
+          delayMicroseconds(700);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(2000);
-          Serial.println(jPos);
+          delayMicroseconds(700);
         }
       }
             
@@ -88,17 +87,16 @@ class motorClass
         {
           if(direction_=='0')
           {
- //           bPos++;
+            bPos++;
           }
           if(direction_=='1')
           {
-   //         bPos--;
+            bPos--;
           }
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(2000);
+          delayMicroseconds(700);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(2000);
-          Serial.println(bPos);
+          delayMicroseconds(700);
         }
       }
       
@@ -112,25 +110,22 @@ class motorClass
           for(int i =0;i<distance;i++)
           {
             digitalWrite(stepPin, HIGH);
-            delayMicroseconds(3000);
+            delayMicroseconds(2000);
             digitalWrite(stepPin, LOW);
-            delayMicroseconds(4000);
-           // zPos--;
-            Serial.println(zPos);
+            delayMicroseconds(2000);
+            zPos--;
           }
         }
         if (direction_ == '1')
         {
           digitalWrite(dirPin,LOW);
-//          delay(50);
           for(int i =0;i<distance;i++)
           {
             digitalWrite(stepPin, HIGH);
-            delayMicroseconds(3000);
+            delayMicroseconds(2800);
             digitalWrite(stepPin, LOW);
-            delayMicroseconds(4000);
-         //   zPos++;
-            Serial.println(zPos);
+            delayMicroseconds(2800);
+            zPos++;
           }
         }
       }
@@ -138,48 +133,70 @@ class motorClass
 
     void armHome()
     {
-    yPinStatus = digitalRead(YArm_MIN_PIN);
-     while(yPinStatus==1)
+      yPinStatus = digitalRead(YArm_MIN_PIN);                          // Read data from end stops
+      jPinStatus = digitalRead(JArm_MIN_PIN);  
+      bPinStatus = digitalRead(BArm_MIN_PIN);
+      zPinStatus = digitalRead(ZArm_MIN_PIN);
+      motorz2('B','1',900);
+      motorz2('J','1',200);
+      while(zPinStatus==0)
+      {
+        zPinStatus = digitalRead(ZArm_MIN_PIN);
+        motorz2('Z','1',1);
+      }
+      motorz2('Z','0',500);
+      while(yPinStatus==1)
       {
         yPinStatus = digitalRead(YArm_MIN_PIN);
         motorz2('Y','1',1);
       }
-      motorz2('Y','0',20);
+      motorz2('Y','0',680);
+      while(digitalRead(BArm_MIN_PIN)==1)
+      {
+        bPinStatus = digitalRead(BArm_MIN_PIN);
+        motorz2('B','1',10);   
+      }
+      while(jPinStatus==1)
+      {
+        jPinStatus = digitalRead(JArm_MIN_PIN);
+        motorz2('J','0',10);   
+      }
+      motorz2('J','1',100);
+      motorz2('B','0',100);
       yPos = 0;
-      zPos=0;
       bPos=0;
       jPos=0;
-      delay(1000);
-      }
-
-
-      void resetPlate()
-      {
-        Gripper.write(90);
-        motorz2('Y','1',500);
-        motorz2('B','1',500);
-        motorz2('Y','1',500);
-        motorz2('J','0',2300);
-//        armHome();
-        incomingByte = '6';
-      }
-
-      void movePlate()
-      {
-      motorz2('Y','0',1000);                // bring the arm to the front
-      motorz2('B','0',1500);                // .018 degrees per step (2222 for 40 degrees)      
-      motorz2('Y','0',1280);
-      motorz2('J','1',1400);
-//      motorz2('Z','0',600);                 // arm down
-//      Gripper.write(0);
-//      motorz2('Z','1',600);
-//    Wire.write('N');   //move needle plate to the proper position
-
-//      motorz2('Y','1',600);
-//      motorz2('J','1',200);
- 
-      incomingByte = '6';
+      zPos=0;
     }
 
+    void movePlate()
+    {
+      Gripper.write(180); 
+      Wrist.write(90);                            //release onto the plate
+      motorz2('B','0',1150);
+      motorz2('J','1',1500);
+      motorz2('Y','0',750);
+      Wrist.write(0);
+    }
+    
+    void movePlate2()
+    {
+      motorz2('Z','0',12300);
+      Gripper.write(0);
+      motorz2('Z','1',6800);
+      Wrist.write(90);
+    }
+    void movePlate3()
+    {
+//      Wire.write('N');
+      motorz2('B','0',600);
+      motorz2('J','0',830);
+      motorz2('Y','1',760);
+      motorz2('Z','0',750);
+      Gripper.write(90);
+      motorz2('Z','1',2000);
+      Wire.write('A');
+      incomingByte = '6';
+    }
 };
 #endif

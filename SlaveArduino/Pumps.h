@@ -20,10 +20,9 @@ class Pumps
     }
     if(plate == 96)
     {
-      analogWrite(pumpz,speedd/16);
-      delay(duration/16);
+      analogWrite(pumpz,speedd);
+      delay(duration);
       analogWrite(pumpz,0);
-      delay(2000);
     }
   }
 

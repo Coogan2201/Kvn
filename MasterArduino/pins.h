@@ -9,21 +9,27 @@
 #define YArm_STEP_PIN           60
 #define YArm_DIR_PIN            61
 #define YArm_ENABLE_PIN         56
-#define YArm_MIN_PIN            14 
+
 
 #define ZArm_STEP_PIN           46
 #define ZArm_DIR_PIN            48
 #define ZArm_ENABLE_PIN         62
+
+#define YArm_MIN_PIN            3
+#define BArm_MIN_PIN            2
+#define JArm_MIN_PIN            15
 #define ZArm_MIN_PIN            18
 
 
-#define gripperPin 11         //gripper
-#define wristPin 6            //wrist
+#define gripperPin 6         //gripper
+#define wristPin 11            //wrist
 
 
 //int xPinStatus;
 int yPinStatus;
 int zPinStatus;
+int bPinStatus;
+int jPinStatus;
 
 float yPos;                   //arm plate
 float zPos;                   //arm height

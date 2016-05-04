@@ -53,9 +53,9 @@ class motorClass
             xPos--;
           }
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(200);
+          delayMicroseconds(70);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(200);
+          delayMicroseconds(70);
         }
                 digitalWrite(X_ENABLE_PIN,        HIGH);
       }      
@@ -84,9 +84,9 @@ class motorClass
             yPos--;
           }
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(200);
+          delayMicroseconds(70);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(200);
+          delayMicroseconds(70);
         }
                 digitalWrite(Y_ENABLE_PIN,        HIGH);
       }
@@ -102,9 +102,9 @@ class motorClass
           for(int i =0;i<distance;i++)
           {
             digitalWrite(stepPin, HIGH);
-            delayMicroseconds(30);
+            delayMicroseconds(25);
             digitalWrite(stepPin, LOW);
-            delayMicroseconds(30);
+            delayMicroseconds(25);
             zPos--;
           }
         }
@@ -115,9 +115,9 @@ class motorClass
           for(int i =0;i<distance;i++)
           {
             digitalWrite(stepPin, HIGH);
-            delayMicroseconds(30);
+            delayMicroseconds(25);
             digitalWrite(stepPin, LOW);
-            delayMicroseconds(30);
+            delayMicroseconds(25);
             zPos++;
           }
         }
@@ -139,9 +139,9 @@ class motorClass
         xPinStatus = digitalRead(X_MIN_PIN);
          digitalWrite(X_ENABLE_PIN,        LOW);       
         digitalWrite(stepPin, HIGH);
-        delayMicroseconds(250);
+        delayMicroseconds(70);
         digitalWrite(stepPin, LOW);
-        delayMicroseconds(250);
+        delayMicroseconds(70);
         digitalWrite(X_ENABLE_PIN,        HIGH);
         }
       motorz2('X','0',250);
@@ -154,9 +154,9 @@ class motorClass
       {
         yPinStatus = digitalRead(Y_MIN_PIN);
         digitalWrite(stepPin, HIGH);
-        delayMicroseconds(250);
+        delayMicroseconds(70);
         digitalWrite(stepPin, LOW);
-        delayMicroseconds(250);
+        delayMicroseconds(70);
       }
               digitalWrite(Y_ENABLE_PIN,        HIGH);
       motorz2('Y','0',350);
@@ -169,9 +169,9 @@ class motorClass
       {
         zPinStatus = digitalRead(Z_MIN_PIN);
         digitalWrite(stepPin, HIGH);
-        delayMicroseconds(35);
+        delayMicroseconds(25);
         digitalWrite(stepPin, LOW);
-        delayMicroseconds(35);
+        delayMicroseconds(25);
       }
               digitalWrite(Z1_ENABLE_PIN,        HIGH);
       zPos = 0;
@@ -285,7 +285,7 @@ class motorClass
     }
 
 
-    int cellPassage(int wellSize)                             //remove cells, sterilize, wash, add media
+    int cellPassage(int wellSize)
     {
       if(wellSize == 6)
       {
@@ -306,9 +306,9 @@ class motorClass
     if(wellSize == 24)
       {
         startX = 6250;
-        startY=9500;
+        startY= 9500;
         wellDist = 1544;
-        numCols = 6;
+        numCols = 3;
         numRows = 4;
         ethanolTime = 5013;
         pbsTime = 5700;
@@ -317,7 +317,7 @@ class motorClass
         ethanolFullTime = 1711;
         pbsFullTime = 1200;
         trypsinFullTime = 960;
-        mediaFullTime = 1190;
+        mediaFullTime = 1500;
         }
 
     for(int j = 0; j<numRows;j++)
@@ -330,74 +330,75 @@ class motorClass
     }
 
       //Aspirate media      
-      for(int n=0;n<wellSize;n++)
-      {
-        relMover(Well[n][0],Well[n][1]);
-        while(zPos>13500)
-        {
-          motorz2('Z','0',1);
-        }      
-        PumpSystem.Pump(wellSize, WastePump, 255, 5000);
-        while(zPos<88000)
-        {
-          motorz2('Z','1',1);
-        }
-      }
+//      for(int n=0;n<12;n++)
+//      {
+//        relMover(Well[n][0],Well[n][1]);
+//        while(zPos>13500)
+//        {
+//          motorz2('Z','0',1);
+//        }      
+//        PumpSystem.Pump(wellSize, WastePump, 255, 5000);
+//        while(zPos<88000)
+//        {
+//          motorz2('Z','1',1);
+//        }
+//      }
       
       //PBS Wash
-      relMover(Well[0][0],Well[0][1]);      
-      PumpSystem.Pump(wellSize, PBSPump, 120, pbsTime);
-      for(int n=0;n<wellSize-1;n++)
-      {
-        relMover(Well[n+1][0],Well[n+1][1]);
-        while(zPos>70000)
-        {
-          motorz2('Z','0',1);
-        }      
-        PumpSystem.Pump(wellSize, PBSPump, 120, pbsFullTime);
-        while(zPos<88000)
-        {
-          motorz2('Z','1',1);
-        }
-      }
+//      relMover(Well[0][0],Well[0][1]);      
+//      PumpSystem.Pump(wellSize, PBSPump, 120, pbsTime);
+//      for(int n=0;n<12-1;n++)
+//      {
+//        relMover(Well[n+1][0],Well[n+1][1]);
+//        while(zPos>70000)
+//        {
+//          motorz2('Z','0',1);
+//        }      
+//        PumpSystem.Pump(wellSize, PBSPump, 120, pbsFullTime);
+//        while(zPos<88000)
+//        {
+//          motorz2('Z','1',1);
+//        }
+//      }
 
-      //Aspirate PBS      
-      for(int n=0;n<wellSize;n++)
-      {
-        relMover(Well[n][0],Well[n][1]);
-        while(zPos>13500)
-        {
-          motorz2('Z','0',1);
-        }      
-        PumpSystem.Pump(wellSize, WastePump, 255, 5000);
-        while(zPos<88000)
-        {
-          motorz2('Z','1',1);
-        }
-      }
+//      //Aspirate PBS      
+//      for(int n=0;n<12;n++)
+//      {
+//        relMover(Well[n][0],Well[n][1]);
+//        while(zPos>13500)
+//        {
+//          motorz2('Z','0',1);
+//        }      
+//        PumpSystem.Pump(wellSize, WastePump, 255, 5000);
+//        while(zPos<88000)
+//        {
+//          motorz2('Z','1',1);
+//        }
+//      }
 
-      //Deposit trypsin
-      relMover(Well[0][0],Well[0][1]);      
-      PumpSystem.Pump(wellSize, TrypsinPump, 120, trypsinTime);
-      for(int n=0;n<wellSize-1;n++)
-      {
-        relMover(Well[n+1][0],Well[n+1][1]);
-        while(zPos>70000)
-        {
-          motorz2('Z','0',1);
-        }      
-        PumpSystem.Pump(wellSize, TrypsinPump, 120, trypsinFullTime/2);
-        while(zPos<88000)
-        {
-          motorz2('Z','1',1);
-        }
-      }
-      delay(60000);     //This is when the user removes the cells to put them in the incubator      
-      
+//      //Deposit trypsin
+//      relMover(Well[0][0],Well[0][1]);      
+//      PumpSystem.Pump(wellSize, TrypsinPump, 120, trypsinTime); //increase this by double
+//      for(int n=0;n<12-1;n++)
+//      {
+//        relMover(Well[n+1][0],Well[n+1][1]);
+//        while(zPos>70000)
+//        {
+//          motorz2('Z','0',1);
+//        }      
+//        PumpSystem.Pump(wellSize, TrypsinPump, 120, trypsinFullTime/2);
+//        while(zPos<88000)
+//        {
+//          motorz2('Z','1',1);
+//        }
+//      }
+//      relMover(900,850);    //Kevin is done
+//      delay(60000);     //This is when the user removes the cells to put them in the incubator      
+//      
       //Deposit Media
       relMover(Well[0][0],Well[0][1]);      
       PumpSystem.Pump(wellSize, MediaPump, 120, mediaTime);
-      for(int n=0;n<wellSize-1;n++)
+      for(int n=0;n<12-1;n++)
       {
         relMover(Well[n+1][0],Well[n+1][1]);
         while(zPos>70000)
@@ -413,7 +414,7 @@ class motorClass
       delay(60000);   //User replaces waste tube with collection tube
 
       //Aspirate Cells
-      for(int n=0;n<wellSize;n++)
+      for(int n=0;n<12;n++)
       {
         relMover(Well[n][0],Well[n][1]);
         while(zPos>13500)
@@ -426,19 +427,21 @@ class motorClass
           motorz2('Z','1',1);
         }
       }
+      relMover(900,850);    //Kevin is done
+      
       delay(60000); //User adds a new well plate
       
       //Deposit Media
       relMover(Well[0][0],Well[0][1]);      
       PumpSystem.Pump(wellSize, MediaPump, 120, mediaTime);
-      for(int n=0;n<wellSize-1;n++)
+      for(int n=0;n<12-1;n++)
       {
         relMover(Well[n+1][0],Well[n+1][1]);
         while(zPos>70000)
         {
           motorz2('Z','0',1);
         }      
-        PumpSystem.Pump(wellSize, MediaPump, 120, mediaFullTime/2);
+        PumpSystem.Pump(wellSize, MediaPump, 120, mediaFullTime);
         while(zPos<88000)
         {
           motorz2('Z','1',1);
