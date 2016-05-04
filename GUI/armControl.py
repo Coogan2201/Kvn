@@ -7,7 +7,9 @@ def buttons(self):
     canvasL.grid(column=0,row=1)
     canvasL.place(y=530)
 
-    
+    w = Label(self, text="Arm functions")
+    w.grid(column=0, row=1)
+    w.place(x=200,y=600)
     
     
     self.LeftButton=Button(self,text="Arm Forward")
@@ -88,4 +90,3 @@ def buttons(self):
     self.HomeArmButton.bind('<Button-1>', self.buttonPressing)        
     self.HomeArmButton.bind('<ButtonRelease-1>', self.buttonPressing)    
     
-    'Gripper Open'
