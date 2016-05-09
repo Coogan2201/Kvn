@@ -15,10 +15,10 @@ class PrinterGui(Frame):
     def __init__(self, master):
         Frame.__init__(self,master)
         self.grid()
-        master.minsize(width=1000,height=1000)
+        master.minsize(width=935,height=900)
         button=Button(self,text="")
         button.grid(row=2,column=2)
-        button.configure(width=55,height=30)
+        button.configure(width=55,height=25)
 
         Motor_control_window.title("Automated Cell Culturer")
 

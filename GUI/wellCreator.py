@@ -5,11 +5,11 @@ def create_wells(self, size):
     well=[]
     self.canvas = Canvas(self,width = 530, height = 500,bg='firebrick')
     self.canvas.grid(row=0,column=0)
-    w = Label(self, text="Well selector")
+    w = Label(self, text="Well selector", font=(16))
     w.grid(column=1, row=0)
     w.place(x=210,y=40)
 
-    self.canvas.create_rectangle(15, 180, 515, 480, fill = "snow2")
+    self.canvas.create_rectangle(15, 160, 515, 460, fill = "snow2")
 
     count = 0
     def _create_circle(x, y, r,**kwargs):
@@ -36,7 +36,7 @@ def create_wells(self, size):
         cols=3
         rows=2
         wells=6
-        self.canvas.create_rectangle(15, 180, 515, 480, fill = "snow2")
+        self.canvas.create_rectangle(15, 160, 515, 460, fill = "snow2")
         for y in range(0,rows):
             for x in range(0,cols):
                 well.append(_create_circle(115+(145*x),265+(125*y),50,fill="white", activefill="cyan"))
@@ -48,7 +48,7 @@ def create_wells(self, size):
         cols=6
         rows=4
         wells=24
-        self.canvas.create_rectangle(15, 180, 515, 480, fill = "snow2")
+        self.canvas.create_rectangle(15, 160, 515, 460, fill = "snow2")
         for y in range(0,rows):
             for x in range(0,cols):
                 well.append(_create_circle(75+(75*x),220+(70*y),16,fill="white", activefill="cyan"))
@@ -59,7 +59,7 @@ def create_wells(self, size):
         cols=12
         rows=8
         wells=96        
-        self.canvas.create_rectangle(15, 180, 515, 480, fill = "snow2")
+        self.canvas.create_rectangle(15, 160, 515, 460, fill = "snow2")
         for y in range(0,rows):
             for x in range(0,cols):
                 well.append(_create_circle(60+(37*x),205+(35*y),9,fill="white", activefill="cyan"))
@@ -72,10 +72,10 @@ def create_wells(self, size):
     self.varWells.set('What size plate are you using?')
     self.wellOption = OptionMenu(self, self.varWells, *self.wellChoice)
     self.wellOption_w=self.canvas.create_window(100,100,window=self.wellOption)
-    self.wellOption.place(x=120,y=131)
+    self.wellOption.place(x=120,y=111)
     SelectButton=Button(self,text="Select!",command=lambda:select_size(self))
     SelectButton.grid()
-    SelectButton.place(x=330,y=133)
+    SelectButton.place(x=330,y=113)
 
         
 def select_size(self):

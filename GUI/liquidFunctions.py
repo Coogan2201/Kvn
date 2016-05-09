@@ -5,8 +5,8 @@ def liquid2Frame(self):
 
     canvasL = Canvas(self, bg='firebrick',width = 400, height=500)
     canvasL.grid(column=1,row=0)
-    canvasL.place(x=550,y=10)
-    w = Label(self, text="Liquid functions")
+    canvasL.place(x=550,y=1)
+    w = Label(self, text="Liquid functions", font=(16))
     w.grid(column=1, row=0)
     w.place(x=700,y=75)
 
