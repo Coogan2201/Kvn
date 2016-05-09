@@ -9,7 +9,7 @@ def buttons(self):
 
     w = Label(self, text="Arm functions", font=(16))
     w.grid(column=0, row=1)
-    w.place(x=200,y=550)
+    w.place(x=200,y=590)
     
     
     self.LeftButton=Button(self,text="Arm Forward")
