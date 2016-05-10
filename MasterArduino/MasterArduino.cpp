@@ -1,10 +1,15 @@
 // Master: Arm Arduino
+
 #include "Arduino.h"
 #include "pins.h"
 #include "motorClass.h"
 #include "U8glib.h"
 U8GLIB_ST7920_128X64_1X u8g(23,17,16);                        // Declare LCD pins
 motorClass gantrySystem;                                      // create instance of motorClass
+
+
+void draw();
+
 
 void draw()													  // Print out stuff to the LCD
 {
@@ -46,8 +51,9 @@ void setup()
 	pinMode(ZArm_MIN_PIN,					INPUT_PULLUP);
 
     Gripper.attach(11);
-    Wrist.attach(6);
-    Serial.begin(19200);
+    Wrist.attach(6);										//Servos
+
+	Serial.begin(19200);
 
     Wire.begin();
 }
