@@ -1,9 +1,9 @@
 #ifndef MOTORCLASS_H
 #define MOTORCLASS_H
+
 #include <Servo.h>
 Servo Gripper;
 Servo Wrist;
-#include <Wire.h>
 
 int stepPin;
 int dirPin;
@@ -24,7 +24,7 @@ class motorClass
         if (direction_=='0')
         {
           digitalWrite(dirPin,LOW);
-        }  
+        }
         for(int i =0;i<distance;i++)            //200 steps/revolution (NEMA 17), 1/16th step per pulse. 3200 pulses/revolution   ? How many revolutions per cm??
         {
           if(direction_=='0')
@@ -53,7 +53,7 @@ class motorClass
         if (direction_=='0')
         {
           digitalWrite(dirPin,LOW);
-        }  
+        }
         for(int i =0;i<distance;i++)            //200 steps/revolution (NEMA 17), 1/16th step per pulse. 3200 pulses/revolution   ? How many revolutions per cm??
         {
           if(direction_=='0')
@@ -70,7 +70,7 @@ class motorClass
           delayMicroseconds(700);
         }
       }
-            
+
       if (motor == 'B')
       {
         stepPin = Base_STEP_PIN;
@@ -82,7 +82,7 @@ class motorClass
         if (direction_=='0')
         {
           digitalWrite(dirPin,LOW);
-        }  
+        }
         for(int i =0;i<distance;i++)            //200 steps/revolution (NEMA 17), 1/16th step per pulse. 3200 pulses/revolution   ? How many revolutions per cm??
         {
           if(direction_=='0')
@@ -99,7 +99,7 @@ class motorClass
           delayMicroseconds(700);
         }
       }
-      
+
       if (motor == 'Z')
       {
         stepPin = ZArm_STEP_PIN;
@@ -134,7 +134,7 @@ class motorClass
     void armHome()
     {
       yPinStatus = digitalRead(YArm_MIN_PIN);                          // Read data from end stops
-      jPinStatus = digitalRead(JArm_MIN_PIN);  
+      jPinStatus = digitalRead(JArm_MIN_PIN);
       bPinStatus = digitalRead(BArm_MIN_PIN);
       zPinStatus = digitalRead(ZArm_MIN_PIN);
       motorz2('B','1',900);
@@ -154,12 +154,12 @@ class motorClass
       while(digitalRead(BArm_MIN_PIN)==1)
       {
         bPinStatus = digitalRead(BArm_MIN_PIN);
-        motorz2('B','1',10);   
+        motorz2('B','1',10);
       }
       while(jPinStatus==1)
       {
         jPinStatus = digitalRead(JArm_MIN_PIN);
-        motorz2('J','0',10);   
+        motorz2('J','0',10);
       }
       motorz2('J','1',100);
       motorz2('B','0',100);
@@ -171,14 +171,14 @@ class motorClass
 
     void movePlate()
     {
-      Gripper.write(180); 
+      Gripper.write(180);
       Wrist.write(90);                            //release onto the plate
       motorz2('B','0',1150);
       motorz2('J','1',1500);
       motorz2('Y','0',750);
       Wrist.write(0);
     }
-    
+
     void movePlate2()
     {
       motorz2('Z','0',12300);
@@ -188,14 +188,12 @@ class motorClass
     }
     void movePlate3()
     {
-//      Wire.write('N');
       motorz2('B','0',600);
       motorz2('J','0',830);
       motorz2('Y','1',760);
       motorz2('Z','0',750);
       Gripper.write(90);
       motorz2('Z','1',2000);
-      Wire.write('A');
       incomingByte = '6';
     }
 };

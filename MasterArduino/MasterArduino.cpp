@@ -14,13 +14,13 @@ void draw();
 void draw()													  // Print out stuff to the LCD
 {
   u8g.setFont(u8g_font_profont11);
-  u8g.setPrintPos(10,10);                                       
+  u8g.setPrintPos(10,10);
     u8g.print(zPos);
-  u8g.setPrintPos(10,30);                                       
+  u8g.setPrintPos(10,30);
     u8g.print(bPos);
-  u8g.setPrintPos(10,50);                                       
+  u8g.setPrintPos(10,50);
     u8g.print(jPos);
-  u8g.setPrintPos(50,10);                                       
+  u8g.setPrintPos(50,10);
     u8g.print(bPinStatus);
  }
 void setup()
@@ -29,13 +29,13 @@ void setup()
 	pinMode(Joint_DIR_PIN,					OUTPUT);		//Direction pins on motos
 	pinMode(Base_DIR_PIN,					OUTPUT);
     pinMode(ZArm_DIR_PIN,				    OUTPUT);
-   
+
 	pinMode(YArm_STEP_PIN,					OUTPUT);
     pinMode(Joint_STEP_PIN,			        OUTPUT);		//Step pins
 	pinMode(Base_STEP_PIN,			        OUTPUT);
     pinMode(ZArm_STEP_PIN,                  OUTPUT);
 
-	pinMode(YArm_ENABLE_PIN,				OUTPUT); 
+	pinMode(YArm_ENABLE_PIN,				OUTPUT);
 	pinMode(Joint_ENABLE_PIN,               OUTPUT);		//Enable pins
 	pinMode(Base_ENABLE_PIN,				OUTPUT);
 	pinMode(ZArm_ENABLE_PIN,                OUTPUT);

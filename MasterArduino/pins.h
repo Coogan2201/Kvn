@@ -2,7 +2,7 @@
 #define Joint_DIR_PIN           55          //X
 #define Joint_ENABLE_PIN        38
 
-#define Base_STEP_PIN           26 
+#define Base_STEP_PIN           26
 #define Base_DIR_PIN            28         //EX0
 #define Base_ENABLE_PIN         24
 

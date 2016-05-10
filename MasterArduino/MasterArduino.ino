@@ -6,7 +6,7 @@
 U8GLIB_ST7920_128X64_1X u8g(23,17,16);                        // Declare LCD pins
 motorClass gantrySystem;                                      // create instance of motorClass
 
-void draw() 
+void draw()
 {
   u8g.setFont(u8g_font_profont11);
   u8g.setPrintPos(10,10);                                       // Print out stuff to the LCD
@@ -16,51 +16,51 @@ void draw()
   u8g.setPrintPos(10,50);                                       // Print out stuff to the LCD
     u8g.print(jPos);
   u8g.setPrintPos(50,10);                                       // Print out stuff to the LCD
-    u8g.print(bPinStatus);    
+    u8g.print(bPinStatus);
  }
-void setup() 
+void setup()
 {
     pinMode(YArm_DIR_PIN,                 OUTPUT);
     pinMode(YArm_STEP_PIN,                OUTPUT);
-    pinMode(YArm_ENABLE_PIN,              OUTPUT);   
+    pinMode(YArm_ENABLE_PIN,              OUTPUT);
     digitalWrite(YArm_ENABLE_PIN,         LOW);
- 
+
     pinMode(Joint_DIR_PIN,                OUTPUT);
     pinMode(Joint_STEP_PIN,               OUTPUT);
     pinMode(Joint_ENABLE_PIN,             OUTPUT);
     digitalWrite(Joint_ENABLE_PIN,        LOW);
-    
+
     pinMode(Base_DIR_PIN,                 OUTPUT);
     pinMode(Base_STEP_PIN,                OUTPUT);
     pinMode(Base_ENABLE_PIN,              OUTPUT);
     digitalWrite(Base_ENABLE_PIN,         LOW);
-    
+
     pinMode(ZArm_DIR_PIN,                 OUTPUT);
     pinMode(ZArm_STEP_PIN,                OUTPUT);
     pinMode(ZArm_ENABLE_PIN,              OUTPUT);
     digitalWrite(ZArm_ENABLE_PIN,         LOW);
 
     pinMode(YArm_MIN_PIN, INPUT);
-    pinMode(ZArm_MIN_PIN, INPUT_PULLUP);    
+    pinMode(ZArm_MIN_PIN, INPUT_PULLUP);
     pinMode(BArm_MIN_PIN, INPUT);
     pinMode(JArm_MIN_PIN, INPUT);
-    
+
     Gripper.attach(11);
     Wrist.attach(6);
-    Serial.begin(19200);   
-    
+    Serial.begin(19200);
+
     Wire.begin();
 }
 
-void loop() 
+void loop()
 {
   Wire.beginTransmission(9); // transmit to device #9
   yPinStatus = digitalRead(YArm_MIN_PIN);                          // Read data from end stops
   zPinStatus = digitalRead(ZArm_MIN_PIN);
   bPinStatus = digitalRead(BArm_MIN_PIN);
-  jPinStatus = digitalRead(JArm_MIN_PIN);  
+  jPinStatus = digitalRead(JArm_MIN_PIN);
 
-if (Serial.available()>0) 
+if (Serial.available()>0)
   {
     incomingByte = Serial.read();
     Serial.print(incomingByte);
@@ -73,7 +73,7 @@ if (Serial.available()>0)
     break;
     case 'B':             // Home, change media in 6 well plate, Home
     Wire.write('B');
-    break;    
+    break;
     case 'C':             // change media 24
     Wire.write('C');
     break;
@@ -89,15 +89,15 @@ if (Serial.available()>0)
     case 'G':             // Y, backward
     Wire.write('G');
     break;
-    case 'H':             // Y, forward         
+    case 'H':             // Y, forward
     Wire.write('H');
-    break;    
+    break;
     case 'I':             // Z, up
     Wire.write('I');
     break;
     case 'J':             // Z, down
     Wire.write('J');
-    break;   
+    break;
     case 'K':             // Z, down
     Wire.write('K');
     break;
@@ -134,12 +134,12 @@ if (Serial.available()>0)
     break;
     case 'a':
     Wrist.write(90);                            //release onto the plate
-    break;    
+    break;
     case 'b':
     Wrist.write(0);                             //clamp the plate
     break;
     case 'c':
-    gantrySystem.motorz2('Y','1',20);            // Y back 
+    gantrySystem.motorz2('Y','1',20);            // Y back
     break;
     case 'd':
     gantrySystem.motorz2('Y','0',20);            // Y front
@@ -152,10 +152,10 @@ if (Serial.available()>0)
     break;
     case 'g':
     Gripper.write(180);                            //clamp onto the plate
-    break;    
+    break;
     case 'h':
     Gripper.write(0);                             //release the plate
-    break;    
+    break;
 
     case '1':
     Wire.write('1');
@@ -174,16 +174,16 @@ if (Serial.available()>0)
     break;
     case '8':
     Serial.println(jPos);
-    
-//    u8g.firstPage();  
-//      do 
+
+//    u8g.firstPage();
+//      do
 //      {
 //        draw();                                                 //Initialize LCD
 //      }
 //      while( u8g.nextPage() );
 //      delay(50);
 //    break;
-    }  
+    }
 
   Wire.endTransmission();    // stop transmitting
 }
