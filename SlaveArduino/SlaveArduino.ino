@@ -11,19 +11,12 @@ U8GLIB_ST7920_128X64_1X u8g(23, 17, 16);                      // Declare LCD pin
 void setup()
 {
   pinMode(X_DIR_PIN,                OUTPUT);
-  pinMode(X_STEP_PIN,               OUTPUT);
-
   pinMode(Y_DIR_PIN,                OUTPUT);
-  pinMode(Y_STEP_PIN,               OUTPUT);
+  pinMode(Z1_DIR_PIN,				OUTPUT);
 
-  pinMode(Z1_DIR_PIN,               OUTPUT);
+  pinMode(X_STEP_PIN,				OUTPUT);
+  pinMode(Y_STEP_PIN,				OUTPUT);
   pinMode(Z1_STEP_PIN,              OUTPUT);
-
-  pinMode(EX1_DIR_PIN,              OUTPUT);
-  pinMode(EX1_STEP_PIN,             OUTPUT);
-
-  pinMode(EX2_DIR_PIN,              OUTPUT);                // Declare and enable motors
-  pinMode(EX2_STEP_PIN,             OUTPUT);
 
   pinMode(X_ENABLE_PIN,             OUTPUT);
   pinMode(Y_ENABLE_PIN,             OUTPUT);
@@ -32,34 +25,32 @@ void setup()
   digitalWrite(X_ENABLE_PIN,        HIGH);
   digitalWrite(Y_ENABLE_PIN,        HIGH);
   digitalWrite(Z1_ENABLE_PIN,       HIGH);
+   
   pinMode(X_MIN_PIN,                INPUT);
   pinMode(Y_MIN_PIN,                INPUT);                   // Declare end stops
   pinMode(Z_MIN_PIN,                INPUT);
+ 
   pinMode(EthanolPump,              OUTPUT);
   pinMode(WastePump,                OUTPUT);
   pinMode(TrypsinPump,              OUTPUT);                  // Declare peristaltic pumps
   pinMode(MediaPump,                OUTPUT);
   pinMode(PBSPump,                  OUTPUT);
+  
   Wire.begin(9);                                              // Initialize the I2C (communicate between the two arduinos)
-      Wire.onReceive(receiveEvent);                               // register event
+  Wire.onReceive(receiveEvent);                               // register event
+
 //  Serial.begin(9600);                                         // Initialize serial communication
 }
+
 void receiveEvent(int bytes)
 {
   incomingByte = Wire.read();                                   // read one character from the I2C}
 }
 
-
-
 void draw()
 {
   u8g.setFont(u8g_font_profont11);
   u8g.setPrintPos(10, 10);                                      // Print out stuff to the LCD
-  u8g.print(yPos);
-  u8g.setPrintPos(10, 30);                                      // Print out stuff to the LCD
-  u8g.print(xPos);
-  u8g.setPrintPos(10, 50);                                      // Print out stuff to the LCD
-  u8g.print(zPos);
 }
 
 void loop()
