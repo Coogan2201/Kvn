@@ -1,49 +1,49 @@
 // Master: Arm Arduino
-
+#include "Arduino.h"
 #include "pins.h"
 #include "motorClass.h"
 #include "U8glib.h"
 U8GLIB_ST7920_128X64_1X u8g(23,17,16);                        // Declare LCD pins
 motorClass gantrySystem;                                      // create instance of motorClass
 
-void draw()
+void draw()													  // Print out stuff to the LCD
 {
   u8g.setFont(u8g_font_profont11);
-  u8g.setPrintPos(10,10);                                       // Print out stuff to the LCD
+  u8g.setPrintPos(10,10);                                       
     u8g.print(zPos);
-  u8g.setPrintPos(10,30);                                       // Print out stuff to the LCD
+  u8g.setPrintPos(10,30);                                       
     u8g.print(bPos);
-  u8g.setPrintPos(10,50);                                       // Print out stuff to the LCD
+  u8g.setPrintPos(10,50);                                       
     u8g.print(jPos);
-  u8g.setPrintPos(50,10);                                       // Print out stuff to the LCD
+  u8g.setPrintPos(50,10);                                       
     u8g.print(bPinStatus);
  }
 void setup()
 {
-    pinMode(YArm_DIR_PIN,                 OUTPUT);
-    pinMode(YArm_STEP_PIN,                OUTPUT);
-    pinMode(YArm_ENABLE_PIN,              OUTPUT);
-    digitalWrite(YArm_ENABLE_PIN,         LOW);
+    pinMode(YArm_DIR_PIN,					OUTPUT);
+	pinMode(Joint_DIR_PIN,					OUTPUT);		//Direction pins on motos
+	pinMode(Base_DIR_PIN,					OUTPUT);
+    pinMode(ZArm_DIR_PIN,				    OUTPUT);
+   
+	pinMode(YArm_STEP_PIN,					OUTPUT);
+    pinMode(Joint_STEP_PIN,			        OUTPUT);		//Step pins
+	pinMode(Base_STEP_PIN,			        OUTPUT);
+    pinMode(ZArm_STEP_PIN,                  OUTPUT);
 
-    pinMode(Joint_DIR_PIN,                OUTPUT);
-    pinMode(Joint_STEP_PIN,               OUTPUT);
-    pinMode(Joint_ENABLE_PIN,             OUTPUT);
-    digitalWrite(Joint_ENABLE_PIN,        LOW);
+	pinMode(YArm_ENABLE_PIN,				OUTPUT); 
+	pinMode(Joint_ENABLE_PIN,               OUTPUT);		//Enable pins
+	pinMode(Base_ENABLE_PIN,				OUTPUT);
+	pinMode(ZArm_ENABLE_PIN,                OUTPUT);
 
-    pinMode(Base_DIR_PIN,                 OUTPUT);
-    pinMode(Base_STEP_PIN,                OUTPUT);
-    pinMode(Base_ENABLE_PIN,              OUTPUT);
-    digitalWrite(Base_ENABLE_PIN,         LOW);
+    digitalWrite(YArm_ENABLE_PIN,			LOW);
+	digitalWrite(Joint_ENABLE_PIN,			LOW);			//Turn motors off when not in use
+	digitalWrite(Base_ENABLE_PIN,			LOW);
+	digitalWrite(ZArm_ENABLE_PIN,			LOW);
 
-    pinMode(ZArm_DIR_PIN,                 OUTPUT);
-    pinMode(ZArm_STEP_PIN,                OUTPUT);
-    pinMode(ZArm_ENABLE_PIN,              OUTPUT);
-    digitalWrite(ZArm_ENABLE_PIN,         LOW);
-
-    pinMode(YArm_MIN_PIN, INPUT);
-    pinMode(ZArm_MIN_PIN, INPUT_PULLUP);
-    pinMode(BArm_MIN_PIN, INPUT);
-    pinMode(JArm_MIN_PIN, INPUT);
+    pinMode(YArm_MIN_PIN,					INPUT);
+    pinMode(JArm_MIN_PIN,					INPUT);			//Endstops
+    pinMode(BArm_MIN_PIN,					INPUT);
+	pinMode(ZArm_MIN_PIN,					INPUT_PULLUP);
 
     Gripper.attach(11);
     Wrist.attach(6);
