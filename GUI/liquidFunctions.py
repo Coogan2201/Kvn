@@ -8,7 +8,7 @@ def liquid2Frame(self):
     canvasL.place(x=550,y=1)
     w = Label(self, text="Liquid functions", font=(16))
     w.grid(column=1, row=0)
-    w.place(x=700,y=75)
+    w.place(x=700,y=76)
 
     self.MediaButton=Button(self,text="Media")
     self.MediaButton.configure(width=10)
